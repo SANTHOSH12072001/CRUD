@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Database CRUD
+{% endblock %}
+<body>
+    {% block content %}
+        <div class="container-fluid" style="margin-top:50px;">
+            <div class="offset-md-3 col-md-6">
+                <h3 class="page-header text-primary text-center"><i class="fa fa-database"> MYSQL - Database</i></h3>
+                <div class=" col-md-6 float-end">
+                    <table class="table">
+                        <tr>
+                            <th><a class="btn btn-success btn-block  w-100" href="insert/">Insert</a></th>
+                            <th><input class="form-control" type="text" id="search" placeholder="search"></th>
+                        </tr>
+                    </table>
+                </div>
+
+                {% if messages %}
+                    {% for message in messages %}
+                        {% if message.tags == 'error' %}
+                            <div class="alert alert-danger mt-4" >
+                                {{ message }}
+                            </div>
+                        {% else %}
+                            <div class="alert alert-{{message.tags}} mt-5">
+                                {{ message }}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                <table class="table table-bordered mt-4">
+                    {% if datas %}
+                    <thead style="text-align:center;">
+                        <tr>
+                            <th>S.No</th>
+                            <th>Name</th>
+                            <th>Age</th>
+                            <th>Email</th>
+                            <th>Contact</th>
+                            <th>Address</th>
+                            <th>Update</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    {% endif %}
+                    {% for data in datas %}
+                    <tbody id="mytable">
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{ data.name}}</td>
+                            <td>{{ data.age}}</td>
+                            <td>{{ data.email}}</td>
+                            <td>{{ data.contact}}</td>
+                            <td>{{ data.address}}</td>
+                            <td><a class="btn btn-primary" href="update/{{data.id}}">Update</a></td>
+                            <td><a class="btn btn-danger" type="submit" href="delete/{{data.id}}">Delete</a></td>
+                        </tr>
+                    </tbody>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+<script>
+        $('document').ready(function(){
+            $('#search').keyup(function(){
+                var value=$(this).val().toLowerCase()
+                $('#mytable tr').filter(function(){
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value)>-1);
+                });
+            });
+        });
+</script>
+    {% endblock %}
+</body>
